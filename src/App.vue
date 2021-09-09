@@ -46,14 +46,12 @@
           </question-card>
           
           <div>
-            <p class="selected-card">{{answer.length ? answer: 'whats this card?'}}</p>
+            <p v-show="!answer.length" class="selected-card">What's this Cards name?</p>
+            <transition name="scale">
+              <p v-show="answer.length" :key="answer" class="selected-card">{{answer}}</p>
+            </transition>
             
-            <div v-show="answer.length">
-              <button @click="evaluateAnswer" class="button button--primary" ref="answerButton">confirm</button>
-              <button @click="answer = ''" class="button button--primary">cancel</button>
-            </div>
-            
-            <div v-show="!answer.length">
+            <div>
               <button @click="evaluateAnswer" class="button button--primary">dont know</button>
               
               <button class="button button--primary"
@@ -61,6 +59,7 @@
                       @click="useJoker">
                 Use Joker
               </button>
+              <button v-show="answer.length" @click="evaluateAnswer" class="button button--secondary">confirm</button>
             </div>
           </div>
           
@@ -161,7 +160,6 @@ export default {
     },
     getCardName(name) {
       this.answer = name;
-      this.$refs.answerButton.focus();
     },
     evaluateAnswer() {
       if (this.currentCard.name.toLowerCase() === this.answer.toLowerCase()) {
@@ -280,8 +278,54 @@ button + button {
   background-image: linear-gradient(hsl(255, 40%, 55%), hsl(255, 40%, 35%));
 }
 
+.button--secondary {
+  background-color: hsl(160, 40%, 40%);
+  background-image: linear-gradient(hsl(165, 40%, 45%), hsl(160, 40%, 30%));
+  color: #fff;
+}
+
+.button--secondary:not(:disabled):hover,
+.button--secondary:not(:disabled):focus {
+  background-color: hsl(150, 40%, 30%);
+  background-image: linear-gradient(hsl(165, 40%, 35%), hsl(160, 40%, 20%));
+}
+
 .button--big {
   font-size: 1.55rem;
+}
+
+/* animations */
+
+.scale-enter-active {
+  transform: scale(0);
+  opacity: 0.5;
+  transform-origin: center;
+}
+
+@keyframes scale-in {
+  0% {
+    transform: scale(0);
+    opacity: 0.5;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.slide-enter-active {
+  transform: translateX(-100%);
+  animation: slide-in 0.25s ease-out;
+}
+
+@keyframes slide-in {
+  0% {
+    transform: translateX(-100%);
+  }
+  
+  100% {
+    transform: translateX(0);
+  }
 }
 
 .app-container {
@@ -308,6 +352,17 @@ button + button {
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
+}
+
+@media screen and (max-height: 47em) {
+  .app-container {
+    justify-content: flex-start;
+  }
+  
+  .center {
+    height: 100%;
+    justify-content: center;
+  }
 }
 
 .spinner {
@@ -365,6 +420,28 @@ button + button {
   align-items: center;
 }
 
+.question-screen {
+  height: 75%;
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+}
+
+.finish-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@media screen and (max-height: 47em) {
+  .screen,
+  .question-screen {
+    height: 90%;
+  }
+}
+
+
+
 .main-title {
   margin-bottom: 0.5em;
   font-size: 3.25rem;
@@ -377,13 +454,6 @@ button + button {
   margin-bottom: 1.5em;
   font-size: 1.15rem;
   color: #efeff5;
-}
-
-.question-screen {
-  height: 75%;
-  display: flex;
-  justify-content: space-between;
-  position: relative;
 }
 
 /* card image */
@@ -409,6 +479,10 @@ button + button {
   margin-bottom: 0.75em;
   font-size: 1.15rem;
   font-weight: 800;
+}
+
+.scale-enter-active.selected-card {
+  animation: scale-in 0.35s ease-in-out;
 }
 
 .joker-container {
@@ -451,51 +525,16 @@ button + button {
   margin-top: 6em;
 }
 
+.scale-enter-active.current-result {
+  animation: scale-in 0.5s ease-out;
+  animation-delay: 0.4s;
+}
+
 .current-result-container .button {
   align-self: flex-end;
 }
 
-.scale-enter-active {
-  transform: scale(0);
-  opacity: 0.5;
-  animation: scale-in 0.5s ease-out;
-  transform-origin: center;
-  animation-delay: 0.4s;
-}
-
-@keyframes scale-in {
-  0% {
-    transform: scale(0);
-    opacity: 0.5;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-.slide-enter-active {
-  transform: translateX(-100%);
-  animation: slide-in 0.25s ease-out;
-}
-
-@keyframes slide-in {
-  0% {
-    transform: translateX(-100%);
-  }
-  
-  100% {
-    transform: translateX(0);
-  }
-}
-
 /* finish screen */
-
-.finish-screen {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
 
 .score {
   margin-bottom: 1em;
