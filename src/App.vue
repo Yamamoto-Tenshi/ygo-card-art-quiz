@@ -15,6 +15,10 @@
             <option value="hard">hard</option>
           </select>
         </div>
+        <button v-show="showQuestion" 
+                @click="$refs.cardsearch.toggleVisibility()"
+                class="button button--primary show-card-search"
+        >{{searchMenuText}}</button>
       </div>
     </header>
     
@@ -76,7 +80,9 @@
           <div class="spinner"></div>
         </div>
 
-        <card-search @select-card="getCardName"></card-search>
+        <card-search ref="cardsearch" 
+                     @select-card="getCardName"
+                     @toggle-menu="showSearchMenu = !showSearchMenu"></card-search>
       </div>
 
       <div class="current-result-screen container"
@@ -122,6 +128,7 @@ export default {
       quizStarted: false,
       randomCardURL: "https://db.ygoprodeck.com/api/v7/randomcard.php",
       difficulty: "easy",
+      showSearchMenu: false,
       currentQuestion: 1,
       currentCard: null,
       currentQuestionResult: "wrong",
@@ -208,6 +215,9 @@ export default {
       return this.quizStarted === false || 
              this.showCurrentQuestionResult === false && this.showFinishScreen === true ||
              this.showCurrentQuestionResult === false && this.showQuestion === true
+    },
+    searchMenuText() {
+      return this.showSearchMenu ? "Close Search Menu" : "Open Search Menu"
     }
   },
   components: {
@@ -247,6 +257,12 @@ img {
   width: 80%;
   max-width: 1025px;
   margin: 0 auto;
+}
+
+@media screen and (max-width: 70em) {
+  .container {
+    width: 95%;
+  }
 }
 
 .button {
@@ -365,6 +381,8 @@ button + button {
   }
 }
 
+
+
 .spinner {
   width: 100px;
   height: 100px;
@@ -404,6 +422,16 @@ button + button {
   font-weight: 800;
 }
 
+.show-card-search {
+  display: none;
+}
+
+@media screen and (max-width: 70em) {
+  .show-card-search {
+    display: inline-block;
+  }
+}
+
 /* screens */
 
 .screen {
@@ -440,7 +468,11 @@ button + button {
   }
 }
 
-
+@media screen and (max-width: 70em) {
+  .screen {
+    padding: 1em;
+  }
+}
 
 .main-title {
   margin-bottom: 0.5em;
@@ -532,6 +564,37 @@ button + button {
 
 .current-result-container .button {
   align-self: flex-end;
+}
+
+@media screen and (max-width: 50em) {
+  .current-result-screen {
+    flex-direction: column;
+    position: relative;
+  }
+
+  .current-result-container {
+    width: 100%;
+    position: absolute;
+    top: 90%;
+    left: 0;
+    flex-direction: row;
+    align-items: center;
+    padding: 0.5em;
+    background-color: rgba(0, 0, 10, 0.35);
+  }
+
+  .card {
+    margin-top: -5em;
+  }
+
+  .current-result {
+    max-width: 165px;
+    margin-top: 0;
+  }
+
+  .current-result-container .button {
+    align-self: center;
+  }
 }
 
 /* finish screen */
