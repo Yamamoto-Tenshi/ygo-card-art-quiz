@@ -24,9 +24,9 @@
     
     <div class="center">
       <div class="start-screen screen container" v-if="!quizStarted">
-        <div>
+        <div class="intro">
           <h1 class="main-title" >YGO Card Art Quiz</h1>
-          <p class="intro">
+          <p class="intro__text">
             In this game you have to guess which Yu-Gi-Oh! card you see on the screen based
             on the artwork. However, only a small part of the image is shown!
             Each round consists of 10 cards. how many can you guess?
@@ -36,7 +36,7 @@
             Play
           </button>
         </div>
-        <img src="./assets/images/start-image.jpg" />
+        <img class="intro__image" src="./assets/images/start-image.jpg" />
       </div>
 
       <div class="question-screen screen container"
@@ -381,8 +381,6 @@ button + button {
   }
 }
 
-
-
 .spinner {
   width: 100px;
   height: 100px;
@@ -474,6 +472,8 @@ button + button {
   }
 }
 
+/* intro section */
+
 .main-title {
   margin-bottom: 0.5em;
   font-size: 3.25rem;
@@ -481,11 +481,26 @@ button + button {
   letter-spacing: 2px;
 }
 
-.intro {
+.intro__text {
   max-width: 45ch;
   margin-bottom: 1.5em;
   font-size: 1.15rem;
   color: #efeff5;
+}
+
+@media screen and (max-width: 70em) {
+  .intro {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+
+  .intro__image {
+    display: none;
+  }
 }
 
 /* card image */
