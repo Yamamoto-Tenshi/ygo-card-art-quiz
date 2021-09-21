@@ -9,7 +9,6 @@
           <label for="difficulty-level">Select Difficulty</label>
           <select class="level-select" id="difficulty-level"
                   v-model="difficulty">
-            <option disabled value="">select difficulty</option>
             <option value="easy">easy</option>
             <option value="medium">medium</option>
             <option value="hard">hard</option>
@@ -468,7 +467,16 @@ button + button {
 
 @media screen and (max-width: 70em) {
   .screen {
-    padding: 1em;
+    padding: 0.5em;
+  }
+
+  .question-screen {
+    justify-content: center;
+    align-items: center;
+  }
+
+  .finish-screen {
+    justify-content: center;
   }
 }
 

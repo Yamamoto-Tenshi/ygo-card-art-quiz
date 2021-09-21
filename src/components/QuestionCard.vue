@@ -64,6 +64,14 @@ export default {
     animation-delay: 0.2s;
   }
 
+  @media screen and (max-width: 25em) {
+    .card-image {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 1 / 1;
+    }
+  }
+
   @keyframes showCard {
     0% {
       transform: scal(0.1);
