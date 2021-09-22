@@ -66,8 +66,10 @@ export default {
 
   @media screen and (max-width: 25em) {
     .card-image {
-      width: 100%;
+      width: 92%;
       height: auto;
+      margin-right: auto;
+      margin-left: auto;
       aspect-ratio: 1 / 1;
     }
   }

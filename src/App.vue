@@ -54,7 +54,7 @@
               <p v-show="answer.length" :key="answer" class="selected-card">{{answer}}</p>
             </transition>
             
-            <div>
+            <div class="button-group">
               <button @click="evaluateAnswer" class="button button--primary">dont know</button>
               
               <button class="button button--primary"
@@ -309,6 +309,14 @@ button + button {
   font-size: 1.55rem;
 }
 
+.button-group {
+  display: flex;
+}
+
+.button-group > button + button {
+  margin-left: 0.25em;
+}
+
 /* animations */
 
 .scale-enter-active {
@@ -461,7 +469,7 @@ button + button {
 @media screen and (max-height: 47em) {
   .screen,
   .question-screen {
-    height: 90%;
+    height: 95%;
   }
 }
 
@@ -487,6 +495,12 @@ button + button {
   font-size: 3.25rem;
   color: hsl(220, 95%, 90%);
   letter-spacing: 2px;
+}
+
+@media screen and (max-width: 35em) {
+  .main-title {
+    font-size: 2.75rem;
+  }
 }
 
 .intro__text {

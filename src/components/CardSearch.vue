@@ -115,10 +115,13 @@ export default {
 
       .search-results {
         width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
       }
 
       .search-result {
-        padding: 0.75em;
+        padding: 1em 0.75em;
       }
   }
 
