@@ -1,13 +1,13 @@
 <template>
   <div>
-      <div class="card-image"
-           :style="{
-               backgroundSize: bgSize,
-               backgroundImage: setImage,
-               backgroundPosition: setPosition
-             }">
-      </div>
+    <div class="card-image"
+         :style="{
+            backgroundSize: bgSize,
+            backgroundImage: setImage,
+            backgroundPosition: setPosition
+          }">
     </div>
+  </div>
 </template>
 
 <script>
@@ -22,7 +22,7 @@ export default {
     return {
       imgURL: "https://storage.googleapis.com/ygoprodeck.com/pics_artgame/",
       zoom: {
-        easy: {imageZoom: 300, jokerZoom: 80},
+        easy: {imageZoom: 300, jokerZoom: 90},
         medium: {imageZoom: 415, jokerZoom: 150},
         hard: {imageZoom: 520, jokerZoom: 200},
       }
@@ -41,9 +41,6 @@ export default {
     }
   },
   methods: {
-    emitAnswer(index) {
-      this.$emit("answer-emitted", index);
-    },
     randomPosition() {
       return Math.floor(Math.random() * 100) + "%";
     }

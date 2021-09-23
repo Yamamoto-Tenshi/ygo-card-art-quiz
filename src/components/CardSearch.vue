@@ -46,7 +46,6 @@ export default {
     }, 1000, true),
     toggleVisibility() {
       this.isHiddenOnSmallScreen = !this.isHiddenOnSmallScreen;
-      this.$emit("toggle-menu");
     }
   }
 }
@@ -120,8 +119,8 @@ export default {
         align-items: center;
       }
 
-      .search-result {
-        padding: 1em 0.75em;
+      .search-result button {
+        padding: 0.5em 0.75em;
       }
   }
 
