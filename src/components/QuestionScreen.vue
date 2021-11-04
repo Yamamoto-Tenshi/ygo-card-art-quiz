@@ -40,7 +40,8 @@
     </div>
 
     <card-search ref="cardsearch" 
-                 @select-card="getCardName">
+                 @select-card="getCardName"
+                 @menu-toggled="toggleMenu">
     </card-search>
   </div>
 </template>

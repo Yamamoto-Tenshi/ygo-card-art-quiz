@@ -31,8 +31,8 @@ export default {
   },
   methods: {
     selectCardName(name) {
-      if (this.isHiddenOnSmallScreen === false) this.toggleVisibility();
       this.$emit("select-card", name);
+      this.$emit("menu-toggled");
     },
     search: debounce(function() {
       if (this.searchString.length === 0) return;
