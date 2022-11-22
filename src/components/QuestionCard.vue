@@ -20,7 +20,7 @@ export default {
   },
   data() {
     return {
-      imgURL: "https://storage.googleapis.com/ygoprodeck.com/pics_artgame/",
+      imgURL: "https://images.ygoprodeck.com/images/cards_cropped/",
       zoom: {
         easy: {imageZoom: 300, jokerZoom: 90},
         medium: {imageZoom: 415, jokerZoom: 150},
