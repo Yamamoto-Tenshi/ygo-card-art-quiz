@@ -1,19 +1,18 @@
 <template>
-  <div :class="{'card-search--hidden': isHiddenOnSmallScreen === true}" class="card-search">
-    <form class="text-form" @submit.prevent="search()">
-        <input type="text" name="name" v-model="searchString" autocomplete="off" 
-               aria-label="search card name" placeholder="search for cards..." 
-               autofocus />
-        <button type="submit" class="button button--primary">Search</button>
-    </form>
+  <div class="card-search quiz-screen__section box box--light flow" :class="{'card-search--sm-visible': showCardSearch}">
+      <form class="card-search__form" @submit.prevent="searchCards">
+        <input aria-label="card name" type="text" v-model="nameString" autocomplete="off" />
+        <button class="button button--primary">Search</button>
+      </form>
 
-    <ul class="search-results" ref="results">
-        <li v-for="result in searchResults" :key="result.id"
-            class="search-result">
-          <button @click="selectCardName(result.name)">{{result.name}}</button>
+      <ul class="search-results box box--light" ref="results">
+        <li v-for="result in searchResults" :key="result.name" class="search-results__item">
+          <a href="#" @click.prevent="selectCard(result)">{{result.name}}</a>
         </li>
-    </ul>
-  </div>
+      </ul>
+
+      <button @click="closeMenu" class="button--primary card-search__close">Close</button>
+    </div>
 </template>
 
 <script>
@@ -21,31 +20,37 @@ import debounce from "../util/debounce.js";
 
 export default {
   name: "CardSearch",
+  props: {
+    showCardSearch: Boolean
+  },
   data() {
     return {
-      searchString: "",
-      searchURL: "https://db.ygoprodeck.com/api/v7/cardinfo.php?&fname=",
-      searchResults: [],
-      isHiddenOnSmallScreen: true
+      apiUrl: "https://db.ygoprodeck.com/api/v7/cardinfo.php?fname=",
+      nameString : "",
+      searchResults: []
     }
   },
   methods: {
-    selectCardName(name) {
-      this.$emit("select-card", name);
-      this.$emit("menu-toggled");
-    },
-    search: debounce(function() {
-      if (this.searchString.length === 0) return;
-      fetch(this.searchURL + this.searchString + "&view=list")
-      .then(result => result.json())
-      .then(result => {
-        this.searchResults = result.data;
-        this.searchString = "";
-        this.$refs.results.scrollTop = 0;
-      })
+    searchCards: debounce(function () {
+      if (this.nameString.length === 0) return;
+      
+      fetch(this.apiUrl + this.nameString)
+        .then(result => result.json())
+        .then(result => {
+          this.searchResults = result.data;
+          this.nameString = "";
+          this.$refs.results.scrollTop = 0;
+        })
+        
     }, 1000, true),
-    toggleVisibility() {
-      this.isHiddenOnSmallScreen = !this.isHiddenOnSmallScreen;
+    selectCard(card) {
+      const name = card.name;
+      this.$emit("card-selected", name);
+      
+      if (this.showCardSearch) this.$emit("close-menu");
+    },
+    closeMenu() {
+      this.$emit("close-menu");
     }
   }
 }
@@ -53,75 +58,83 @@ export default {
 
 <style scoped>
 
-  input[type="text"] {
-    padding: 0.5em;
-    border: none;
-  }
+.card-search {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
-  .text-form {
-    display: flex;
-    flex-direction: row;
-    margin-bottom: 0.25em;
-  }
+.card-search__form {
+  display: flex;
+  align-items: center;
+  align-self: stretch;
+}
 
-  .text-form input[type="text"] {
-    margin-right: 0.25em;
-  }
+.card-search__form > * + * {
+  margin-left: 0.25rem;
+}
 
-  .search-results {
-    list-style: none;
-    height: 375px;
-    width: 450px;
-    padding: 0.5em;
-    border: 1px solid hsl(200, 40%, 75%);
-    background-color: rgba(0, 0, 0, 0.25);
-    overflow: auto;
-  }
+.card-search input[type="text"] {
+  border: 2px solid var(--border-color-medium);
+  background-color: var(--box-bg-medium);
+  flex-basis: 100%;
+}
 
-  .search-result {
-    padding: 0.75em 0.25em;
-  }
+.card-search__close {
+  display: none;
+}
 
-  .search-result button {
+
+@media screen and (max-width: 60em) {
+  .card-search {
+    display: none;
+    margin: 0 auto;
+  }
+  
+  .card-search--sm-visible {
     display: block;
-    border: none;
-    background: transparent;
-    color: #fff;
-    font-family: inherit;
-    font-size: 1rem;
-    cursor: pointer;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 10;
   }
-
-  .search-result button:hover,
-  .search-result button:focus {
-    color: hsl(200, 55%, 85%);
+  
+  .card-search__form button {
+    padding: var(--spacing-small-1) var(--spacing-small-2);
+    font-size: var(--font-size-1);
   }
-
-    @media screen and (max-width: 70em) {
-      .card-search {
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        top: 0;
-        left: 0;
-        padding: 0.5em;
-        background-color: rgba(0, 0, 10, 0.85);
-      }
-
-      .card-search--hidden {
-        display: none;
-      }
-
-      .search-results {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-      }
-
-      .search-result button {
-        padding: 0.5em 0.75em;
-      }
+  
+  .card-search__close {
+    display: block;
+    width: 100%;
+    max-width: 10rem;
+    margin-right: auto;
+    margin-left: auto;
   }
+}
+
+.search-results {
+  height: 325px;
+  width: 100%;
+  overflow: auto;
+  
+  box-shadow: none;
+}
+
+.search-results__item a {
+  width: 100%;
+  display: inline-block;
+  padding: 0.25rem;
+  color: var(--text-color-dark);
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.search-results__item > a:hover,
+.search-results__item > a:focus {
+  background-color: var(--highlight-color);
+}
 
 </style>
