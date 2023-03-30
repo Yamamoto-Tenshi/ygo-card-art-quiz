@@ -238,6 +238,12 @@ input[type="password"] {
   margin: 0 auto;
 }
 
+@media screen and (min-width: 95em) {
+  .wrapper {
+    max-width: 80rem;
+  }
+}
+
 .columns {
   --column-gap: var(--spacing-medium-1);
   
@@ -299,6 +305,7 @@ input[type="password"] {
   filter: brightness(80%);
   opacity: 0.5;
   color: #666;
+  cursor: not-allowed;
 }
 
 .button--primary:not(:disabled):hover,
@@ -359,6 +366,12 @@ input[type="password"] {
   margin: 0 auto;
 }
 
+@media screen and (min-width: 95em) {
+  .header-wrapper {
+    max-width: 90%;
+  }
+}
+
 .app-header {
   --header-color: var(--text-color-accent);
   padding: 0.75em;
@@ -397,7 +410,7 @@ input[type="password"] {
   text-shadow: 0px 0px 2px #000,
                0px 0px 2px #000;
   border: none;
-  box-shadow: 0px 0px 0px #fff;
+  box-shadow: none;
   border-radius: 0px;
   border-bottom: 1px solid #5d5958;
   -webkit-clip-path: var(--button-shape);
@@ -442,7 +455,7 @@ input[type="password"] {
   box-shadow: none;
 }
 
-.design--5ds .button--primary:not(:disabled):focs {
+.design--5ds .button--primary:not(:disabled):focus {
   box-shadow: none;
 }
 
