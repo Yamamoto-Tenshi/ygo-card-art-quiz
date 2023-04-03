@@ -6,7 +6,7 @@
 
           <p>
             In this game you have to guess which Yu-Gi-Oh! card you see on the screen based on the artwork. 
-            However, you can only see a small fraction of the image, because it is zommed in. You can 
+            However, you can only see a small fraction of the image, because it is zoomed in. You can 
             zoom out, but the more you do, the less points you get.
           </p>
 

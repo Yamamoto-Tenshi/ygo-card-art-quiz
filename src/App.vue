@@ -36,7 +36,6 @@ export default {
     return {
       showStartScreen: true,
       showQuizScreen: false,
-      showResultScreen: false,
       showScoreScreen: false,
       
       quizResult: {},
@@ -62,7 +61,6 @@ export default {
     hideAllScreens() {
       this.showStartScreen = false;
       this.showQuizScreen = false;
-      this.showResultScreen = false;
       this.showScoreScreen = false;
     },
     toggleDesign() {
@@ -233,7 +231,7 @@ input[type="password"] {
 /* utilities */
 
 .wrapper {
-  padding: 0 1.5rem;
+  padding: 0 var(--spacing-small-2);
   max-width: 70rem;
   margin: 0 auto;
 }
