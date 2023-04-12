@@ -1,7 +1,7 @@
 <template>
   <main id="app" >
   <div :class="{'design--5ds': showAltDesign}">
-    <div class="header-wrapper">
+    <div v-show="showStartScreen" class="header-wrapper">
       <header class="app-header">
         <h1 class="app-title">YGO Card Art Quiz</h1>
       </header>
@@ -69,7 +69,9 @@ export default {
     }
   },
   computed: {
-
+    showHeader() {
+      return this.showQuizScreen === false;
+    }
   },
   components: {
     StartScreen,
@@ -105,7 +107,7 @@ export default {
   --border-color-light: #8fb869;
   
   --dark-box-shadow: inset 0px 0px 1px 2px #554416;
-  --light-box-shadow: inset 0px 0px 1px 2px #b1a06a;
+  --light-box-shadow: inset 0px 0px 1px 2px #8c8565;
   
   --highlight-color: #f7a34a;
   
@@ -284,7 +286,7 @@ input[type="password"] {
 .button--primary {
   --button-bg: linear-gradient(180deg, rgba(239,240,215,1) 15%, rgba(207,207,155,1) 45%);
   --button-color: #000;
-  --button-border-color: #a6a682;
+  --button-border-color: #afac92;
   
   padding: 0.25em 2em;
   color: var(--button-color);
@@ -384,13 +386,27 @@ input[type="password"] {
 
 /* animation / transition */
 
-.v-enter-active,
-.v-leave-active {
-  transition: opacity 0.5s ease;
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.75s ease;
 }
 
-.v-enter-from,
-.v-leave-to {
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.slide-fade-enter-active {
+  transition: all 0.5s ease-in-out;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translateX(20px);
   opacity: 0;
 }
 

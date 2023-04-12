@@ -1,5 +1,5 @@
 <template>
-  <div class="card-search quiz-screen__section box box--light flow" :class="{'card-search--sm-visible': showCardSearch}">
+  <div class="card-search quiz-screen__section flow" :class="{'card-search--sm-visible': showCardSearch}">
       <form class="card-search__form" @submit.prevent="searchCards">
         <input aria-label="card name" type="text" v-model="nameString" autocomplete="off" />
         <button class="button button--primary">Search</button>
@@ -62,6 +62,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+  flex-grow: 1;
 }
 
 .card-search__form {
@@ -89,6 +90,8 @@ export default {
   .card-search {
     display: none;
     margin: 0 auto;
+    background-color: var(--box-bg-light);
+    border: 3px solid var(--border-color-light);
   }
   
   .card-search--sm-visible {
@@ -126,15 +129,22 @@ export default {
 .search-results__item a {
   width: 100%;
   display: inline-block;
-  padding: 0.25rem;
+  padding: 0.5rem 0.25rem;
   color: var(--text-color-dark);
   font-weight: 800;
   cursor: pointer;
 }
 
 .search-results__item > a:hover,
-.search-results__item > a:focus {
+.search-results__item > a:focus,
+.search-results__item > a:active {
   background-color: var(--highlight-color);
+}
+
+@media screen and (max-width: 35em) {
+  .search-results__item a {
+    padding: 1rem 0.25rem;
+  }
 }
 
 </style>

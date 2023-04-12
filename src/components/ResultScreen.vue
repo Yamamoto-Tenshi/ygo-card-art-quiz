@@ -2,10 +2,14 @@
   <div class="result-screen box box--light">
       <div class="result-container">
         <div>
-          <img :src="cardImage" class="card-image" />
+          <transition name="slide-fade">
+            <img v-show="showResult" :src="cardImage" class="card-image" />
+          </transition>
         </div>
         <div class="result">
-          <p class="result__text">{{resultText}}</p>
+          <transition name="fade"  style="transition-delay: 0.75s">
+            <p v-show="showResult" class="result__text">{{resultText}}</p>
+          </transition>
           <button class="button--primary button--big" @click="returnToGame">Continue</button>
         </div>
       </div>
@@ -18,10 +22,12 @@ export default {
   name: "ResultScreen",
   props: {
     card: Object,
-    result: Boolean
+    result: Boolean,
+    showResult: Boolean
   },
   methods: {
     returnToGame() {
+      console.log(this.showResult)
       this.$emit("return-to-game");
     }
   },
@@ -80,5 +86,6 @@ export default {
     font-size: var(--font-size-6);
   }
 }
+
 
 </style>

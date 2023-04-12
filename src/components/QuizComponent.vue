@@ -2,14 +2,13 @@
   <div>
       <section class="quiz-screen">
         <div class="flow">
-          <div v-show="!showResultScreen" class="columns columns--even">
-            <div class="card-image-container quiz-screen__section box box--light flow">
+          <div v-show="!showResultScreen" class="box box--light columns">
+            <div class="card-image-container quiz-screen__section flow">
 
-              <transition>
-                <card-image v-show="currentCard !== null" 
-                            :card="currentCard" :zoom-levels="zoomLevels" :zoom="currentZoomLevel">
-                </card-image>
-              </transition>
+              <card-image v-show="currentCard !== null" 
+                          :card="currentCard" :zoom-levels="zoomLevels" :zoom="currentZoomLevel"
+                          ref="image">
+              </card-image>
 
               <div class="zoom-buttons">
                 <button v-for="(button, index) in nextZoomLevels"
@@ -38,6 +37,7 @@
           <result-screen v-show="showResultScreen" 
                            :card="currentCard" 
                            :result="currentResult"
+                           :show-result="showResultScreen"
                            @return-to-game="continueQuiz">
           </result-screen>
 
@@ -82,13 +82,13 @@ export default {
       currentCardNumber: 0,
       
       currentZoomLevel: 0,
-      zoomLevels: [775, 450, 225, 100],
-      
+      zoomLevels: [4000, 2700, 1500, 800, 400],
       scoreMap: {
         "0": 100,
-        "1": 50,
-        "2": 25,
-        "3": 1
+        "1": 75,
+        "2": 50,
+        "3": 25,
+        "4": 2
       }
     }
   },
@@ -151,7 +151,13 @@ export default {
             setTimeout(() => this.getRandomCard(), 150);
           }
           else {
+            this.$refs.image.clear();
             this.currentCard = result;
+            
+            this.$nextTick(() => {
+              this.$refs.image.nextImage();
+              
+            });
           }
         })
     },
@@ -168,11 +174,14 @@ export default {
       this.addAnswerToList(false);
       this.currentResult = false;
       
-      //this.nextCard();
       this.showCurrentResult();
     },
     nextZoom() {
       this.currentZoomLevel++;
+
+      this.$nextTick(() => {
+        this.$refs.image.drawImage();
+      })
     },
     checkAnswer(name) {
       const result = name.toLowerCase() === this.currentCard.name.toLowerCase();
@@ -182,7 +191,6 @@ export default {
         this.score += this.scoreMap[this.currentZoomLevel];
         this.addAnswerToList(result);
         
-        //this.nextCard();
         this.showCurrentResult();
       }
       else {
@@ -269,6 +277,10 @@ export default {
   .zoom-buttons > * + * {
     margin-left: 0;
     margin-top: var(--spacing-small-2);
+  }
+
+  .zoom-buttons button:disabled {
+    display: none;
   }
 }
 
