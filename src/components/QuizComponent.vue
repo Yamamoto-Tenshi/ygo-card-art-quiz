@@ -82,13 +82,13 @@ export default {
       currentCardNumber: 0,
       
       currentZoomLevel: 0,
-      zoomLevels: [4000, 2700, 1500, 800, 400],
+      zoomLevels: [4000, 2200, 1200, 800, 400],
       scoreMap: {
         "0": 100,
         "1": 75,
         "2": 50,
         "3": 25,
-        "4": 2
+        "4": 10
       }
     }
   },
