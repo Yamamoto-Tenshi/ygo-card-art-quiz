@@ -44,6 +44,7 @@
           <div class="quiz-data box box--dark">
             <p>Card: {{currentCardNumber}}</p>
             <p>Score: {{score}}</p>
+            <p>Guesses Left: {{guessesLeft}}</p>
             <div v-show="mode === 'time'">Time left: <game-timer ref="timer" @timer-ended="onTimeEnded"></game-timer></div>
             <button class="card-search__open button--primary button--small" @click="openMenu">Search</button>
           </div>
@@ -69,6 +70,8 @@ export default {
       
       score: 0,
       cardsGuessed: [],
+
+      guessesLeft: 5,
       
       showCurrentFeedback: false,
       feedbackText: "",
@@ -82,7 +85,7 @@ export default {
       currentCardNumber: 0,
       
       currentZoomLevel: 0,
-      zoomLevels: [4000, 2200, 1200, 800, 400],
+      zoomLevels: [4000, 1850, 1200, 650, 400],
       scoreMap: {
         "0": 100,
         "1": 75,
@@ -102,6 +105,7 @@ export default {
       this.currentCardNumber = 0;
       this.currentZoomLevel = 0;
       this.score = 0;
+      this.guessesLeft = 5;
       
       this.nextCard();
       
@@ -167,6 +171,7 @@ export default {
       this.currentCard = null;
       this.currentZoomLevel = 0;
       this.currentCardNumber++;
+      this.guessesLeft = 5;
       
       this.getRandomCard();
     },
@@ -186,6 +191,7 @@ export default {
     checkAnswer(name) {
       const result = name.toLowerCase() === this.currentCard.name.toLowerCase();
       this.currentResult = result;
+      this.guessesLeft--;
       
       if (result === true) {
         this.score += this.scoreMap[this.currentZoomLevel];
@@ -203,7 +209,8 @@ export default {
         card: this.currentCard,
         cardNumber: this.currentCardNumber,
         guessedRight: result,
-        gainedPoints: result === true ? this.scoreMap[this.currentZoomLevel] : 0
+        gainedPoints: result === true ? this.scoreMap[this.currentZoomLevel] : 0,
+        guessesNeeded: 5 - this.guessesLeft
       };
       
       this.cardsGuessed.push(answer);
@@ -211,7 +218,10 @@ export default {
     showFeedback(feedback) {
       this.feedbackText = feedback;
       this.showCurrentFeedback = true;
-      setTimeout(() => {this.showCurrentFeedback = false}, 1250);
+      setTimeout(() => {
+        this.showCurrentFeedback = false;
+        if (this.guessesLeft < 1) this.giveupCard();
+      }, 1250);
     },
     onTimeEnded() {
       this.endQuiz();
