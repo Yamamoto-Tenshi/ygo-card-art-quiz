@@ -64,7 +64,7 @@ export default {
   name: "QuizComponent",
   data() {
     return {
-      randomCardApi: "https://db.ygoprodeck.com/api/v7/randomcard.php",
+      randomCardApi: "https://db.ygoprodeck.com/api/v7/cardinfo.php?num=1&offset=0&sort=random&cachebust",
       mode: "",
       quizIsRunning: false,
       
@@ -156,7 +156,7 @@ export default {
           }
           else {
             this.$refs.image.clear();
-            this.currentCard = result;
+            this.currentCard = result.data[0];
             
             this.$nextTick(() => {
               this.$refs.image.nextImage();
