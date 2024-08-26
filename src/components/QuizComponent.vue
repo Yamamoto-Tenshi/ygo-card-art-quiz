@@ -149,18 +149,20 @@ export default {
       fetch(this.randomCardApi)
         .then(result => result.json())
         .then(result => {
-          // if card is a skill card, token or not released fetch again
-          if (result.type === "Skill" || result.id >= 100000000 || result.type === "Token") {
+          const card = result.data[0];
+          
+          const isMatchWinner = /you win the match|wins the match/g.test(card.desc.toLowerCase());
+          // if the card is a skill card, token, match winner or not released fetch again
+          if (card.type === "Skill Card" || card.id >= 100000000 || card === "Token" || isMatchWinner) {
             console.log("fetch again")
             setTimeout(() => this.getRandomCard(), 150);
           }
           else {
             this.$refs.image.clear();
-            this.currentCard = result.data[0];
+            this.currentCard = card;
             
             this.$nextTick(() => {
               this.$refs.image.nextImage();
-              
             });
           }
         })
