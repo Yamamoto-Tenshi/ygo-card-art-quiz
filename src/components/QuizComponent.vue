@@ -151,10 +151,11 @@ export default {
         .then(result => {
           const card = result.data[0];
           
-          const isMatchWinner = /you win the match|wins the match/g.test(card.desc.toLowerCase());
           // if the card is a skill card, token, match winner or not released fetch again
-          if (card.type === "Skill Card" || card.id >= 100000000 || card === "Token" || isMatchWinner) {
-            console.log("fetch again")
+          const isMatchWinner = /you win the match|wins the match/g.test(card.desc.toLowerCase());
+          
+          if (card.type === "Skill Card" || card.id >= 100000000 || card.type === "Token" || isMatchWinner) {
+            console.log("fetch again ")
             setTimeout(() => this.getRandomCard(), 150);
           }
           else {
