@@ -43,12 +43,12 @@ export default {
         })
         
     }, 1000, true),
-    selectCard(card) {
+    selectCard: debounce(function(card) {
       const name = card.name;
       this.$emit("card-selected", name);
       
       if (this.showCardSearch) this.$emit("close-menu");
-    },
+    }, 1300, true),
     closeMenu() {
       this.$emit("close-menu");
     }

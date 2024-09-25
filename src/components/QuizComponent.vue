@@ -85,9 +85,9 @@ export default {
       currentCardNumber: 0,
       
       currentZoomLevel: 0,
-      zoomLevels: [4000, 1900, 1200, 650, 400],
+      zoomLevels: [4000, 1875, 1100, 650, 400],
       scoreMap: {
-        "0": 100,
+        "0": 150,
         "1": 75,
         "2": 50,
         "3": 25,

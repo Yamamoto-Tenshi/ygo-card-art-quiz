@@ -71,9 +71,11 @@ export default {
   font-size: var(--font-size-7);
   font-weight: 800;
   color: var(--highlight-color);
-  text-shadow: 0px 0px 10px #000,
-               0px 0px 10px #000,
-               0px 0px 10px #000;
+  text-shadow: 0px 0px 5px #000,
+               0px 0px 5px #000,
+               0px 0px 5px #000,
+               0px 0px 5px #000,
+               0px 0px 5px #000;
   text-transform: uppercase;
 }
 
