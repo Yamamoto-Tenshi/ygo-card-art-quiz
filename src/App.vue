@@ -384,32 +384,6 @@ input[type="password"] {
   border-right-width: 4px;
 }
 
-/* animation / transition */
-
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.75s ease;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-
-.slide-fade-enter-active {
-  transition: all 0.5s ease-in-out;
-}
-
-.slide-fade-leave-active {
-  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
-}
-
-.slide-fade-enter-from,
-.slide-fade-leave-to {
-  transform: translateX(20px);
-  opacity: 0;
-}
-
 /* 5ds design */
 
 
@@ -507,6 +481,43 @@ input[type="password"] {
 
 .design--5ds .card-search input[type="text"] {
   color: var(--text-color-light);
+}
+
+/* animation / transition */
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.75s ease;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+
+
+.zoom-fade-enter-active, 
+.zoom-fade-leave-active {
+  transition: all 0.75s ease;
+}
+.zoom-fade-enter, 
+.zoom-fade-leave-to {
+  opacity: 0;
+  transform: scale(1.5);
+}
+
+.slide-fade-enter-active {
+  transition: all 0.5s ease-in-out;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translateX(20px);
+  opacity: 0;
 }
 
 

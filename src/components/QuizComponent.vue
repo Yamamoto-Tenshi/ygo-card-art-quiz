@@ -85,9 +85,9 @@ export default {
       currentCardNumber: 0,
       
       currentZoomLevel: 0,
-      zoomLevels: [4000, 1875, 1100, 650, 400],
+      zoomLevels: [4000, 1860, 1100, 650, 400],
       scoreMap: {
-        "0": 150,
+        "0": 100,
         "1": 75,
         "2": 50,
         "3": 25,
@@ -192,6 +192,7 @@ export default {
       })
     },
     checkAnswer(name) {
+      if (this.guessesLeft < 1) return;
       const result = name.toLowerCase() === this.currentCard.name.toLowerCase();
       this.currentResult = result;
       this.guessesLeft--;
@@ -203,6 +204,10 @@ export default {
         this.showCurrentResult();
       }
       else {
+        if (this.guessesLeft === 0) {
+          this.addAnswerToList(false);
+          this.currentResult = false;
+        }
         this.showFeedback("Incorrect!");
       }
       
@@ -223,7 +228,7 @@ export default {
       this.showCurrentFeedback = true;
       setTimeout(() => {
         this.showCurrentFeedback = false;
-        if (this.guessesLeft < 1) this.giveupCard();
+        if (this.guessesLeft < 1) this.showCurrentResult();
       }, 1250);
     },
     onTimeEnded() {

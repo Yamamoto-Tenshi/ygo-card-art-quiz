@@ -35,10 +35,12 @@ export default {
       if (this.nameString.length === 0) return;
       
       fetch(this.apiUrl + this.nameString)
-        .then(result => result.json())
+        .then(response => {
+          if (response.ok) this.nameString = "";
+          return response.json();
+        })
         .then(result => {
           this.searchResults = result.data;
-          this.nameString = "";
           this.$refs.results.scrollTop = 0;
         })
         
@@ -48,7 +50,7 @@ export default {
       this.$emit("card-selected", name);
       
       if (this.showCardSearch) this.$emit("close-menu");
-    }, 1300, true),
+    }, 1000, true),
     closeMenu() {
       this.$emit("close-menu");
     }
