@@ -11,6 +11,18 @@
           <transition name="zoom-fade">
             <p v-show="showResult" class="result__text">{{resultText}}</p>
           </transition>
+
+          <div v-if="mode === 'bonus'">
+            <div v-show="zoom === 0 && result === true" class="result__info">
+              + 1 Card 
+              <div class="result__info-image" 
+                   :class="{'card-add-animation': showAnimation}" 
+                   ref="card"
+                   @animationend="returnAfterAnimation">
+              </div>
+            </div>
+          </div>
+
           <button class="button--primary button--big" @click="returnToGame">Continue</button>
         </div>
       </div>
@@ -24,12 +36,28 @@ export default {
   props: {
     card: Object,
     result: Boolean,
-    showResult: Boolean
+    showResult: Boolean,
+    zoom: Number,
+    mode: String
+  },
+  data() {
+    return {
+      showAnimation: false
+    }
   },
   methods: {
     returnToGame() {
-      console.log(this.showResult)
-      this.$emit("return-to-game");
+      if (this.mode === "bonus") {
+        if (this.result === true && this.zoom === 0) {
+          this.showAnimation = true;
+        }
+        else this.$emit("return-to-game", false);
+      }
+      else this.$emit("return-to-game", false);
+    },
+    returnAfterAnimation() {
+      this.showAnimation = false;
+      this.$emit("return-to-game", true);
     }
   },
   computed: {
@@ -37,7 +65,7 @@ export default {
       return this.card ? this.card.card_images[0].image_url : "";
     },
     resultText() {
-      return this.result ? "Correct" : "Incorrect!";
+      return this.result ? this.zoom === 0 ? "Perfect" : "Correct" : "Incorrect!";
     }
   }
 }
@@ -118,6 +146,55 @@ export default {
   
   .result__text {
     font-size: var(--font-size-6);
+  }
+}
+
+.result__info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--spacing-small-2);
+  font-size: var(--font-size-2);
+}
+
+.result__info-image {
+  margin-left: 1rem;
+  height: 35px;
+  width: 25px;
+  background-image: url("../assets/images/cardback_small.jpg");
+  background-size: cover;
+  position: relative;
+}
+
+.card-add-animation::after {
+
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 35px;
+  width: 25px;
+  background-image: url("../assets/images/cardback_small.jpg");
+  background-size: cover;
+  animation: add-card 1.2s forwards;
+}
+
+@keyframes add-card {
+  0% {}
+
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 22px rgba(255, 255, 255, 5),
+                0 0 22px rgba(255, 255, 255, 5);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(2.5);
+    -webkit-filter: brightness(550);
+    box-shadow: 0 0 22px rgba(255, 255, 255, 5),
+                0 0 22px rgba(255, 255, 255, 5);
   }
 }
 

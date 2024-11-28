@@ -38,11 +38,16 @@
                            :card="currentCard" 
                            :result="currentResult"
                            :show-result="showResultScreen"
+                           :zoom="currentZoomLevel"
+                           :mode="mode"
                            @return-to-game="continueQuiz">
           </result-screen>
 
           <div class="quiz-data box box--dark">
-            <p>Card: {{currentCardNumber}}</p>
+            <p>
+              <span>Card: {{currentCardNumber}}</span>
+              <span v-show="mode !== 'time'"> / {{cardsPerRound}}</span>
+            </p>
             <p>Score: {{score}}</p>
             <p>Guesses Left: {{guessesLeft}}</p>
             <div v-show="mode === 'time'">Time left: <game-timer ref="timer" @timer-ended="onTimeEnded"></game-timer></div>
@@ -65,8 +70,11 @@ export default {
   data() {
     return {
       randomCardApi: "https://db.ygoprodeck.com/api/v7/cardinfo.php?num=1&offset=0&sort=random&cachebust",
-      mode: "",
       quizIsRunning: false,
+
+      mode: "normal",
+
+      cardsPerRound: 10,
       
       score: 0,
       cardsGuessed: [],
@@ -85,7 +93,7 @@ export default {
       currentCardNumber: 0,
       
       currentZoomLevel: 0,
-      zoomLevels: [4000, 1860, 1100, 650, 400],
+      zoomLevels: [3900, 1850, 1100, 650, 400],
       scoreMap: {
         "0": 100,
         "1": 75,
@@ -97,7 +105,7 @@ export default {
   },
   methods: {
     startQuiz(mode) {
-      this.mode = mode;
+      this.setMode(mode);
       this.quizIsRunning = true;
       this.showResultScreen = false;
       this.cardsGuessed = [];
@@ -106,16 +114,10 @@ export default {
       this.currentZoomLevel = 0;
       this.score = 0;
       this.guessesLeft = 5;
+      this.cardsPerRound = 10;
       
       this.nextCard();
       
-      if (this.mode === "time") {
-        this.$refs.timer.runTimer();
-        console.log("time mode")
-      }
-      else if (this.mode === "normal") {
-        console.log("normal mode")
-      }
     },
     endQuiz() {
       this.quizIsRunning = false;
@@ -128,6 +130,16 @@ export default {
 
       this.$emit("quiz-end", quizResult);
     },
+    setMode(mode) {
+      this.mode = mode;
+
+      if (mode === "time") {
+        this.$refs.timer.runTimer();
+        console.log("time mode")
+      }
+      
+      this.zoomLevels = this.mode === "bonus" ? [2360, 1515, 1000, 640, 400] : [3900, 1850, 1100, 650, 400];
+    },
     showCurrentResult() {
       this.quizIsRunning = false;
       
@@ -135,8 +147,10 @@ export default {
       
       this.showResultScreen = true;
     },
-    continueQuiz() {
+    continueQuiz(addBonusCard = false) {
       this.quizIsRunning = true;
+
+      if (addBonusCard) this.cardsPerRound++;
       
       if (this.mode === "time") this.$refs.timer.resumeTimer();
       
@@ -169,7 +183,7 @@ export default {
         })
     },
     nextCard() {
-      if (this.mode === "normal" && this.currentCardNumber === 10) this.endQuiz();
+      if (this.mode !== "time" && this.currentCardNumber === this.cardsPerRound) this.endQuiz();
       
       this.currentCard = null;
       this.currentZoomLevel = 0;
@@ -317,7 +331,7 @@ export default {
 .quiz-data {
   display: flex;
   align-items: center;
-  padding: var(--spacing-medium-1);
+  padding: 0.5rem;
   font-weight: 800;
 }
 

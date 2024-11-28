@@ -11,6 +11,7 @@
       <start-screen v-show="showStartScreen" @game-start="play" @change-design="toggleDesign"></start-screen>
 
       <quiz-component v-show="showQuizScreen" 
+                      
                       ref="quizscreen"
                       @quiz-end="finishQuiz">
       </quiz-component>
@@ -38,7 +39,11 @@ export default {
       showQuizScreen: false,
       showScoreScreen: false,
       
-      quizResult: {},
+      quizResult: {
+        score: 0,
+        cardsGuessed: [],
+        mode: ""
+      },
       
       showAltDesign: false
     }
@@ -356,6 +361,10 @@ input[type="password"] {
   --box-text-color: var(--text-color-light);
   
   box-shadow: var(--dark-box-shadow);
+}
+
+.box__content {
+  padding: 0.5rem;
 }
 
 /* header */

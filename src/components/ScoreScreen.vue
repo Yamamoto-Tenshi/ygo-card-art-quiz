@@ -2,6 +2,7 @@
   <div class="score-screen box box--dark">
       <div class="flow">
         <h2 class="">Quiz Result</h2>
+        <p>Cards: {{quizResult.cardsGuessed.length}}</p>
         <p class="score">Final Score: <span class="score__number">{{quizResult.score}}</span></p>
         <ul class="cards-guessed">
           <li v-for="result in quizResult.cardsGuessed" :key="result.cardNumber" 
@@ -21,7 +22,8 @@
 export default {
   name: "ScoreScreen",
   props: {
-    quizResult: Object
+    quizResult: Object,
+    mode: String
   },
   methods: {
     returnToStartScreen() {

@@ -1,5 +1,5 @@
 <template>
-  <div class="start-screen box box--light flow">
+    <div class="start-screen box box--light flow">
       <div class="start-screen__content">
         <div class="start-screen__intro flow">
           <h2>Test your knowledge!</h2>
@@ -10,27 +10,53 @@
             zoom out, but the more you do, the less points you get.
           </p>
 
-          <div class="mode-selection columns columns--even">
-            <div class="start-screen__mode box box--dark flow">
-              <h3>Time Mode</h3>
-              <p>Try to guess as many cards as possible within <strong>10 minutes</strong>.</p>
-              <button class="button--primary button--big" @click="startGame('time')">Play</button>
-            </div>
+          <form class="select-mode-section flow" @submit.prevent="startGame">
+            <div class="flow" style="--flow-space: var(--spacing-small-1)">
+              <div class="box box--dark"><p class="box__content">Select a Mode</p></div>
 
-            <div class="start-screen__mode box box--dark flow">
-              <h3>Normal Mode</h3>
-              <p>Out of 10 cards, how many can you guess right?</p>
-              <button class="button--primary button--big" @click="startGame('normal')">Play</button>
+              <div class="mode-selection">
+                <div class="mode-selection__options box box--light">
+                  <p class="mode-selection__option">
+                    <input type="radio" id="normal" name="mode" value="normal" v-model="mode" checked/>
+                    <label for="normal">Normal Mode</label>
+                  </p>
+
+                  <p class="mode-selection__option">
+                    <input type="radio" id="time" name="mode" value="time" v-model="mode" />
+                    <label for="time">Time Mode</label>
+                  </p>
+
+                  <p class="mode-selection__option">
+                    <input type="radio" id="bonus" name="mode" value="bonus" v-model="mode" />
+                    <label for="bonus">Bonus Mode</label>
+                  </p>
+                </div>
+
+                <div class="mode-selection__description box box--light">
+                  <div class="box__content">
+                    <p v-show="mode === 'normal'">
+                      In this Mode you have to guess 10 Cards.
+                    </p>
+                    <p v-show="mode === 'time'">
+                      Guess as many Cards as possible within 10 Minutes.
+                    </p>
+                    <p v-show="mode === 'bonus'">
+                      Starting with 10 Cards to guess, every time you guess a card right 
+                      on the first zoom, you get another Card to guess. The Zooms are
+                      easier in this Mode.
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
+            <button class="button--primary">Play</button>
+          </form>
         </div>
 
-        <img 
-          src="../assets/images/start-image.jpg"
-          class="start-screen__image"
-        />
+        <div class="start-screen__image"></div>
+        
       </div>
-      <button @click="changeDesign" class="button--primary button--small">Change Design</button>
+      <!-- <button @click="changeDesign" class="button--primary button--small">Change Design</button> -->
     </div>
 </template>
 
@@ -38,9 +64,14 @@
 
 export default {
   name: "StartScreen",
+  data() {
+    return {
+      mode: "normal"
+    }
+  },
   methods: {
-    startGame(mode) {
-      this.$emit("game-start", mode);
+    startGame() {
+      this.$emit("game-start", this.mode);
     },
     changeDesign() {
       this.$emit("change-design");
@@ -51,34 +82,77 @@ export default {
 </script>
 
 <style scoped>
+  
+  .start-screen__content {
+    display: flex;
+  }
 
-.start-screen {
-  padding: var(--spacing-big-2);
-}
+  .start-screen__intro {
+    flex-basis: 65%;
+    padding: 5rem 2rem;
+  }
 
-.start-screen__content {
-  display: flex;
-  justify-content: space-between;
-}
+  .select-mode-section {
+    /**/
+  }
 
-.start-screen__intro {
-  max-width: 70ch;
-}
+  .mode-selection {
+    display: flex;
+  }
 
-.start-screen__image {
-  align-self: stretch;
-  margin-left: var(--spacing-medium-2);
-}
+  .mode-selection > * + * {
+    margin-left: var(--spacing-small-1);
+  }
 
-.start-screen__mode {
-  padding: var(--spacing-medium-2);
-  text-align: center;
-}
+  .mode-selection__options {
+    flex-basis: 30%;
+  }
 
-@media screen and (max-width: 60em) {
-  .start-screen__image {
+  .mode-selection__description {
+    flex-basis: 70%;
+  }
+
+  .mode-selection__option > input {
     display: none;
   }
-}
+
+  .mode-selection__option > label {
+    display: block;
+    font-weight: 800;
+    padding: 0.25rem 0.5rem;
+  }
+
+  .mode-selection__option > input:checked + label {
+    background-color: var(--highlight-color);
+  }
+
+  .start-screen__image {
+    flex-basis: 35%;
+    background-image: url("../assets/images/start-image.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center 25%;
+  }
+
+
+  @media screen and (max-width: 60em) {
+    .start-screen__intro {
+      flex-basis: 100%;
+      padding: 2rem 2rem;
+    }
+    
+    .mode-selection {
+      flex-direction: column;
+    }
+    
+    .mode-selection > * + * {
+      margin-left: 0;
+      margin-top: var(--spacing-small-1);
+    }
+    
+    .start-screen__image {
+      display: none;
+    }
+  }
 
 </style>
