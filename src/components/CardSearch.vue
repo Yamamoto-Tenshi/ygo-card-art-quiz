@@ -141,6 +141,7 @@ export default {
 .search-results__item > a:focus,
 .search-results__item > a:active {
   background-color: var(--highlight-color);
+  animation: var(--highlight-animation);
 }
 
 @media screen and (max-width: 35em) {

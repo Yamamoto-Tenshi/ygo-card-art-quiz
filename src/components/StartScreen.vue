@@ -92,9 +92,7 @@ export default {
     padding: 5rem 2rem;
   }
 
-  .select-mode-section {
-    /**/
-  }
+
 
   .mode-selection {
     display: flex;
@@ -124,6 +122,13 @@ export default {
 
   .mode-selection__option > input:checked + label {
     background-color: var(--highlight-color);
+    animation: var(--highlight-animation);
+  }
+
+  @keyframes highlight-animation {
+    0% {background-color: rgba(247, 163, 74, 1)}
+    50% {background-color: rgba(247, 163, 74, 0.5)}
+    100% {background-color: rgba(247, 163, 74, 1)}
   }
 
   .start-screen__image {
@@ -138,7 +143,7 @@ export default {
   @media screen and (max-width: 60em) {
     .start-screen__intro {
       flex-basis: 100%;
-      padding: 2rem 2rem;
+      padding: 1.5rem 1.5rem;
     }
     
     .mode-selection {

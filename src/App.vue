@@ -115,6 +115,7 @@ export default {
   --light-box-shadow: inset 0px 0px 1px 2px #8c8565;
   
   --highlight-color: #f7a34a;
+  --highlight-animation: highlight-animation 2s linear infinite;
   
   --spacing-small-1: 0.25rem;
   --spacing-small-2: 0.5rem;
@@ -527,6 +528,12 @@ input[type="password"] {
 .slide-fade-leave-to {
   transform: translateX(20px);
   opacity: 0;
+}
+
+@keyframes highlight-animation {
+  0% {background-color: rgba(247, 163, 74, 1)}
+  50% {background-color: rgba(247, 163, 74, 0.5)}
+  100% {background-color: rgba(247, 163, 74, 1)}
 }
 
 

@@ -51,7 +51,11 @@
             <p>Score: {{score}}</p>
             <p>Guesses Left: {{guessesLeft}}</p>
             <div v-show="mode === 'time'">Time left: <game-timer ref="timer" @timer-ended="onTimeEnded"></game-timer></div>
-            <button class="card-search__open button--primary button--small" @click="openMenu">Search</button>
+            <button class="card-search__open button--primary button--small" 
+                    v-show="quizIsRunning"
+                    @click="openMenu">
+              Search
+            </button>
           </div>
         </div>
       </section>
